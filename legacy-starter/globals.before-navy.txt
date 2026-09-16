@@ -22,13 +22,12 @@
 
 @utility site-container { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1rem; @media (min-width: 640px) { padding-inline: 1.5rem; } @media (min-width: 1024px) { padding-inline: 2rem; } }
 @utility button-primary { display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; background: #ff6b00; padding: .85rem 1.5rem; font-weight: 700; color: white; box-shadow: 0 10px 25px rgba(255,107,0,.18); transition: transform .2s ease, background-color .2s ease, box-shadow .2s ease; &:hover { background: #e65f00; transform: translateY(-2px); box-shadow: 0 14px 30px rgba(255,107,0,.24); } }
-@utility nav-link { color: rgba(255,255,255,.82); font-size: .875rem; font-weight: 600; transition: color .2s ease; &:hover { color: #ff6b00; } }
-@utility mobile-nav-link { display: block; border-radius: .75rem; padding: .7rem .75rem; color: rgba(255,255,255,.82); font-size: .95rem; font-weight: 600; &:hover { background: rgba(255,255,255,.1); color: #ff6b00; } }
+@utility nav-link { color: #344054; font-size: .875rem; font-weight: 600; transition: color .2s ease; &:hover { color: #ff6b00; } }
+@utility mobile-nav-link { display: block; border-radius: .75rem; padding: .7rem .75rem; color: #344054; font-size: .95rem; font-weight: 600; &:hover { background: rgba(255,107,0,.08); color: #ff6b00; } }
 @utility eyebrow { display: inline-flex; border-radius: 999px; background: rgba(255,107,0,.1); padding: .4rem .75rem; color: #ff6b00; font-size: .7rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
 @utility footer-title { margin-bottom: 1.25rem; font-family: var(--font-el-messiri), serif; font-size: 1.1rem; font-weight: 700; }
 .brand-mark { display: inline-flex; height: 2.75rem; width: 2.75rem; flex-shrink: 0; align-items: center; justify-content: center; border-radius: 999px; border: 3px solid white; color: white; font-family: var(--font-el-messiri), serif; font-size: 1.4rem; font-weight: 800; box-shadow: 0 0 0 1px rgba(16,24,40,.12); }
-.brand-mark-orange { background: #ff6b00; }
-.brand-mark-green { background: #009c48; }
+.brand-mark-orange { background: #ff6b00; } .brand-mark-green { background: #009c48; }
 .hero-placeholder { min-height: 520px; background: linear-gradient(120deg, #102a43, #009c48, #ff6b00); }
 .rich-content p { margin-top: 1rem; line-height: 1.9; color: #475467; white-space: pre-line; }
 .rich-content h2 { margin-top: 2.25rem; font-family: var(--font-el-messiri), serif; font-size: 1.5rem; font-weight: 700; color: #101828; }

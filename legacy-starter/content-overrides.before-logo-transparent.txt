@@ -5,7 +5,6 @@ export function applyContentOverrides(content: SiteContent): SiteContent {
     ...content,
     settings: {
       ...content.settings,
-      logoPrimary: "/media/logo-lksa-transparent.png",
       address: "Jl. Veteran No.118 / 34 A, Kb. Pisang, Kec. Sumur Bandung, Kota Bandung, Jawa Barat 40112",
       phone: "+62 22 4210572",
     },
