@@ -38,7 +38,7 @@ export function applyContentOverrides(content: SiteContent): SiteContent {
       accountNumber: "131-00-1673433-3",
       accountHolder: "Yayasan Panti Asuhan Muhammadiyah",
       confirmationMessage: "Assalamu'alaikum, saya sudah melakukan donasi untuk LKSA Panti Asuhan Muhammadiyah Sumur Bandung dan ingin melakukan konfirmasi.",
-      confirmationWhatsapp: "6281320307090",
+      confirmationWhatsapp: "6281223823617",
       transparencyHeading: "Transparansi dan Legalitas Donasi",
     },
   };

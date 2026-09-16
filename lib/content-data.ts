@@ -13,10 +13,12 @@ export const defaultContent: SiteContent = {
     socialLinks: [
       { label: "YouTube", href: "https://www.youtube.com/watch?v=F9WCHpAHtNA" },
       { label: "Facebook", href: "https://web.facebook.com/profile.php?id=100010243572787" },
+      { label: "TikTok", href: "https://www.tiktok.com/@udin.nasrudin80" },
+      { label: "Instagram", href: "https://www.instagram.com/muhammadiyah_sumurbandung/" },
       { label: "Google Maps", href: "https://maps.app.goo.gl/yhShdyuhzkv1bcz5A?g_st=aw" },
     ],
     footerDescription: "LKSA/Panti Asuhan Muhammadiyah Sumur Bandung mendampingi anak asuh melalui pengasuhan, pendidikan, pembinaan Al-Qur'an, dan kegiatan sosial yang berkelanjutan.",
-    whatsappNumber: "6281320307090",
+    whatsappNumber: "6281223823617",
     whatsappAgentName: "Admin LKSA Sumur Bandung",
     whatsappResponseTime: "Biasanya membalas dalam beberapa jam.",
     whatsappGreeting: "Assalamu'alaikum. Ada yang bisa kami bantu terkait informasi panti, kunjungan, atau donasi?",
@@ -75,7 +77,7 @@ export const defaultContent: SiteContent = {
     ] },
   ],
   documents: [],
-  donation: { heading: "Dukung Pengasuhan dan Pendidikan Anak", description: "Setiap dukungan membantu memenuhi kebutuhan pendidikan, pembinaan Al-Qur'an, kesehatan, dan pengasuhan anak-anak LKSA.", bankName: "Informasi transfer tersedia melalui WhatsApp resmi", accountNumber: "", accountHolder: "Hubungi admin untuk detail donasi", qrisUrl: "", confirmationMessage: "Assalamu'alaikum, saya ingin mendapatkan informasi donasi untuk LKSA Panti Asuhan Muhammadiyah Sumur Bandung.", confirmationWhatsapp: "6281320307090", transparencyHeading: "Transparansi Donasi" },
+  donation: { heading: "Dukung Pengasuhan dan Pendidikan Anak", description: "Setiap dukungan membantu memenuhi kebutuhan pendidikan, pembinaan Al-Qur'an, kesehatan, dan pengasuhan anak-anak LKSA.", bankName: "Informasi transfer tersedia melalui WhatsApp resmi", accountNumber: "", accountHolder: "Hubungi admin untuk detail donasi", qrisUrl: "", confirmationMessage: "Assalamu'alaikum, saya ingin mendapatkan informasi donasi untuk LKSA Panti Asuhan Muhammadiyah Sumur Bandung.", confirmationWhatsapp: "6281223823617", transparencyHeading: "Transparansi Donasi" },
   ledger: [],
   donors: [],
 };
