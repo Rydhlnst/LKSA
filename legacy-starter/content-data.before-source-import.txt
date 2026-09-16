@@ -1,0 +1,140 @@
+import type { SiteContent } from "./content-types";
+
+const placeholder = (label: string, from = "#ff6b00", to = "#102a43") =>
+  `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720"><defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="${from}"/><stop offset="1" stop-color="${to}"/></linearGradient></defs><rect width="1200" height="720" fill="url(#g)"/><circle cx="1000" cy="110" r="240" fill="#ffffff" fill-opacity=".12"/><circle cx="160" cy="650" r="300" fill="#ffffff" fill-opacity=".08"/><text x="72" y="610" fill="#fff" font-family="Arial" font-size="42" font-weight="700">${label}</text></svg>`)}`;
+
+export const defaultContent: SiteContent = {
+  settings: {
+    organizationName: "LKSA Panti Asuhan Muhammadiyah Semarang",
+    shortName: "LKSA Panti Asuhan Muhammadiyah",
+    logoPrimary: "",
+    logoSecondary: "",
+    address: "Jl. Giri Mukti Bar. II No.19, Tlogosari Kulon, Kec. Pedurungan, Kota Semarang, Jawa Tengah 50196",
+    phone: "085165810824",
+    email: "lksapamuhsmg@gmail.com",
+    mapUrl: "https://maps.google.com/?q=-6.988137,110.462759",
+    socialLinks: [
+      { label: "Instagram", href: "https://www.instagram.com/mcc.lksa.pamuh.smg" },
+      { label: "YouTube", href: "https://www.youtube.com/@MCC-LKSA_Pamuh_Smg" },
+      { label: "Facebook", href: "https://www.facebook.com/share/1D5KaBwFRW/" },
+    ],
+    footerDescription:
+      "Muhammadiyah Children Center-Lembaga Kesejahteraan Sosial yang bergerak dalam pengasuhan dan pembinaan anak yatim, piatu, yatim piatu, dan dhuafa.",
+    whatsappNumber: "6285165810824",
+    whatsappAgentName: "Admin Panti Asuhan",
+    whatsappResponseTime: "Biasanya membalas dalam beberapa jam.",
+    whatsappGreeting: "Assalamu'alaikum. Ada yang bisa kami bantu terkait donasi atau informasi panti?",
+    whatsappMessage:
+      "Assalamu'alaikum Wr. Wb. Ingin mengetahui lebih lanjut tentang program panti, kegiatan anak asuh, donasi, kunjungan, atau peluang kerja sama?",
+  },
+  heroSlides: [
+    {
+      id: "hero-1",
+      title: "Selamat Datang di LKSA Panti Asuhan Muhammadiyah Kota Semarang",
+      description: "Membangun generasi Islam yang mandiri, beriman, dan berakhlak mulia",
+      imageUrl: placeholder("Melayani dengan Hati", "#ff6b00", "#12304a"),
+      ctaLabel: "Salurkan Donasi",
+      ctaHref: "/donasi",
+      order: 1,
+      active: true,
+    },
+    {
+      id: "hero-2",
+      title: "Bersama Kita Peduli",
+      description: "Bantu anak-anak yatim dan dhuafa meraih masa depan yang lebih cerah",
+      imageUrl: placeholder("Bersama Kita Peduli", "#009c48", "#12304a"),
+      ctaLabel: "Tentang Kami",
+      ctaHref: "/tentang-kami",
+      order: 2,
+      active: true,
+    },
+    {
+      id: "hero-3",
+      title: "Program Kegiatan Kami",
+      description: "Pendidikan, pembinaan akhlak, dan pengembangan keterampilan anak asuh",
+      imageUrl: placeholder("Program Kegiatan", "#0f766e", "#12304a"),
+      ctaLabel: "Lihat Galeri",
+      ctaHref: "/galeri",
+      order: 3,
+      active: true,
+    },
+  ],
+  homeValues: [
+    { id: "value-1", title: "Pendidikan Baik", description: "Memberikan akses pendidikan formal dan non-formal yang berkualitas.", icon: "book", order: 1, active: true },
+    { id: "value-2", title: "Pembinaan Akhlak", description: "Menanamkan nilai-nilai keislaman dan budi pekerti yang luhur.", icon: "sparkles", order: 2, active: true },
+    { id: "value-3", title: "Keterampilan", description: "Membekali anak dengan life skill agar siap mandiri di masa depan.", icon: "users", order: 3, active: true },
+    { id: "value-4", title: "Kasih Sayang", description: "Lingkungan pengasuhan yang aman, nyaman, dan penuh kekeluargaan.", icon: "heart", order: 4, active: true },
+  ],
+  pages: [
+    {
+      id: "page-about",
+      slug: "tentang-kami",
+      title: "Tentang Kami",
+      intro: "Profil singkat, visi, dan misi Panti Asuhan Muhammadiyah Kota Semarang.",
+      body: "Sejarah & Kiprah LKSA Panti Asuhan Muhammadiyah Kota Semarang\n\nDelapan Dekade Merawat Asa, Mendidik Generasi Bangsa\n\nPerjalanan LKSA Panti Asuhan Muhammadiyah Kota Semarang adalah kisah tentang konsistensi, kepedulian sosial, dan semangat keumatan yang tak pernah padam. Kami hadir sebagai tempat bernaung bagi anak-anak yatim, piatu, yatim-piatu, dan dhuafa.\n\nVisi\n\nMewujudkan generasi yang beriman, berakhlak mulia, berilmu, dan mandiri melalui pendidikan dan pembinaan anak asuh.\n\nMisi\n\nMenyelenggarakan pendidikan agama, memberikan pengasuhan yang aman, mengembangkan kemampuan anak asuh, serta menyiapkan mereka menghadapi masa depan yang gemilang.",
+      status: "published",
+      updatedAt: "2026-09-16",
+    },
+    {
+      id: "page-sop",
+      slug: "sop-pengasuhan",
+      title: "SOP Pengasuhan Anak",
+      intro: "Standar Operasional Prosedur pengasuhan untuk memastikan kesejahteraan anak-anak panti.",
+      body: "I. DASAR HUKUM\n\nUndang-Undang Nomor 35 Tahun 2014 tentang Perlindungan Anak.\n\nII. TUJUAN\n\nMenjamin terpenuhinya hak-hak anak dalam pengasuhan dan memastikan layanan pengasuhan dilaksanakan secara aman, terencana, dan berkelanjutan.\n\nIII. RUANG LINGKUP\n\nPenerimaan anak, pengasuhan sehari-hari, kebutuhan dasar, pendidikan, kesehatan, pembinaan mental-spiritual, monitoring, evaluasi, dan penguatan keluarga.",
+      status: "published",
+      updatedAt: "2026-09-16",
+    },
+  ],
+  organization: [
+    { id: "org-1", name: "Dr. K.H. Fachur Rozi, M.Ag", role: "Pimpinan Daerah Muhammadiyah (PDM) Semarang", parentId: null, order: 1, active: true },
+    { id: "org-2", name: "dr. Sarwoko Oetomo, MMR., FISQua", role: "Majelis Pembinaan Kesejahteraan Sosial (MPKS)", parentId: "org-1", order: 1, active: true },
+    { id: "org-3", name: "H. Muh Syamsuddin, S.Sos., M.M", role: "Ketua", parentId: "org-2", order: 1, active: true },
+    { id: "org-4", name: "Muh Natsir Noor Effendi, S.H", role: "Sekretaris", parentId: "org-3", order: 1, active: true },
+    { id: "org-5", name: "Ahmad Dahlan", role: "Kepala Panti", parentId: "org-3", order: 2, active: true },
+    { id: "org-6", name: "Santoso, S.E", role: "Bendahara", parentId: "org-3", order: 3, active: true },
+  ],
+  schedule: [
+    { id: "schedule-1", group: "weekday", period: "pagi", time: "03.30-04.00", activity: "Bangun Tidur / MCK / Persiapan Sholat", location: "Regu", coordinator: "Staf Pendidikan", order: 1, active: true },
+    { id: "schedule-2", group: "weekday", period: "pagi", time: "04.00-04.55", activity: "Sholat Subuh", location: "Masjid At Taqwa", coordinator: "", order: 2, active: true },
+    { id: "schedule-3", group: "weekday", period: "siang", time: "06.05-06.45", activity: "Kegiatan Belajar Mengajar", location: "Sekolahan", coordinator: "Bapak/Ibu Guru", order: 3, active: true },
+    { id: "schedule-4", group: "weekday", period: "sore", time: "17.15-17.35", activity: "Tadarus Al Qur'an / Ngaji Sore", location: "Masjid At Taqwa", coordinator: "", order: 4, active: true },
+    { id: "schedule-5", group: "weekday", period: "malam", time: "20.00-20.45", activity: "Belajar Malam", location: "Ruang Aula", coordinator: "Staf Pendidikan", order: 5, active: true },
+    { id: "schedule-6", group: "weekend", period: "pagi", time: "04.55-06.30", activity: "Tahfidz / Hafalan", location: "Asatidz", coordinator: "", order: 1, active: true },
+    { id: "schedule-7", group: "weekend", period: "sore", time: "15.15-16.30", activity: "Olah Raga Sore", location: "Lapangan", coordinator: "Ketua Regu", order: 2, active: true },
+  ],
+  articles: [
+    {
+      id: "article-1",
+      title: "Program Pendidikan Non-Formal Semester 1",
+      slug: "program-pendidikan-non-formal-semester-1",
+      excerpt: "Membentuk Generasi Berilmu, Berakhlaq Mulia, dan Mandiri.",
+      coverUrl: placeholder("Pendidikan Non-Formal", "#009c48", "#103b4c"),
+      body: "Program pendidikan non-formal menjadi bagian penting dari pembinaan anak asuh. Kegiatan dirancang untuk memperkuat ilmu, akhlak, dan kemandirian melalui proses belajar yang terarah.",
+      publishDate: "2026-08-11",
+      status: "published",
+      featured: true,
+      updatedAt: "2026-08-11",
+    },
+  ],
+  galleries: [],
+  donation: {
+    heading: "Salurkan Donasi Anda",
+    description: "Mari bersama-sama wujudkan kepedulian dan kebahagiaan untuk anak-anak yatim dan dhuafa. Setiap kebaikan Anda sangat berarti bagi mereka.",
+    bankName: "BANK RAKYAT INDONESIA (BANK BRI)",
+    accountNumber: "3042-01-019166-53-1",
+    accountHolder: "Panti Asuhan Muhammadiyah Semarang",
+    qrisUrl: "",
+    confirmationMessage: "Assalamu'alaikum, saya ingin konfirmasi donasi ke Panti Asuhan Muhammadiyah Semarang.",
+    confirmationWhatsapp: "6285165810824",
+    transparencyHeading: "Transparansi Keuangan",
+  },
+  ledger: [
+    { id: "ledger-1", type: "income", description: "Donasi masyarakat", amount: 1800000, date: "2026-08-18", status: "completed", public: true },
+    { id: "ledger-2", type: "expense", description: "Kegiatan pendidikan dan kebutuhan anak asuh", amount: 31064000, date: "2026-08-18", status: "completed", public: true },
+  ],
+  donors: [
+    { id: "donor-1", displayName: "Ibu. Desi Afiati", amount: 500000, date: "2026-08-18", public: false },
+    { id: "donor-2", displayName: "Bp. Muh Noor Ardiansyah", amount: 100000, date: "2026-08-14", public: false },
+  ],
+};
+

@@ -1,0 +1,5 @@
+import { notFound } from "next/navigation";
+import { getSiteContent } from "@/lib/content-store";
+import { PublicShell } from "@/components/site/public-shell";
+
+export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) { const { slug } = await params; const content = await getSiteContent(); const article = content.articles.find((item) => item.slug === slug && item.status === "published"); if (!article) notFound(); return <PublicShell content={content}><article><div className="bg-[#f8fafc] py-16 md:py-24"><div className="site-container max-w-4xl"><span className="eyebrow">Berita & Artikel</span><h1 className="mt-5 font-heading text-4xl font-bold leading-tight text-ink md:text-6xl">{article.title}</h1><p className="mt-5 text-sm font-semibold text-orange">{article.publishDate}</p></div></div><div className="site-container max-w-3xl py-16 md:py-24"><div className="aspect-[16/8] rounded-3xl bg-cover bg-center shadow-card" style={{ backgroundImage: `url(${article.coverUrl})` }} /><div className="rich-content mt-10"><p>{article.body}</p></div></div></article></PublicShell>; }

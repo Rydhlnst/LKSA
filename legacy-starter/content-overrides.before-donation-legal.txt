@@ -1,0 +1,27 @@
+import type { SiteContent } from "./content-types";
+
+export function applyContentOverrides(content: SiteContent): SiteContent {
+  return {
+    ...content,
+    settings: {
+      ...content.settings,
+      address: "Jl. Veteran No.118 / 34 A, Kb. Pisang, Kec. Sumur Bandung, Kota Bandung, Jawa Barat 40112",
+      phone: "+62 22 4210572",
+    },
+    articles: [
+      ...content.articles,
+      {
+        id: "article-rotimu",
+        title: "RotiMu: Ikhtiar Kemandirian dan Pemberdayaan Anak Asuh",
+        slug: "rotimu-kemandirian-panti-asuhan",
+        excerpt: "RotiMu menjadi usaha kreatif LKSA Muhammadiyah Sumur Bandung untuk mendukung kemandirian lembaga dan keterampilan anak asuh.",
+        coverUrl: "/media/kegiatan-bersama.jpeg",
+        body: "RotiMu adalah usaha ekonomi produktif LKSA Muhammadiyah Sumur Bandung yang dikembangkan untuk mendukung kemandirian panti dan pemberdayaan anak-anak asuh. Anak-anak dikenalkan pada proses produksi, penjualan, dan keterampilan yang dapat menjadi bekal setelah menyelesaikan masa pengasuhan.\n\nInformasi ini bersumber dari video resmi LKSA Muhammadiyah Sumur Bandung berjudul Transformasi RotiMu: Inovasi Muhammadiyah Social Fund. Saksikan video lengkapnya melalui kanal resmi kami.",
+        publishDate: "2024-11-16",
+        status: "published",
+        featured: true,
+        updatedAt: "2026-09-16",
+      },
+    ],
+  };
+}

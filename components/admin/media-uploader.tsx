@@ -1,0 +1,5 @@
+"use client";
+
+import { useState } from "react";
+
+export function MediaUploader() { const [message, setMessage] = useState(""); const [url, setUrl] = useState(""); async function submit(event: React.FormEvent<HTMLFormElement>) { event.preventDefault(); setMessage("Mengunggah..."); const response = await fetch("/api/upload", { method: "POST", body: new FormData(event.currentTarget) }); const data = await response.json() as { url?: string; error?: string }; if (!response.ok) { setMessage(data.error ?? "Upload gagal."); return; } setUrl(data.url ?? ""); setMessage("Upload berhasil."); } return <form onSubmit={submit} className="rounded-2xl border border-line bg-white p-6 shadow-subtle"><label className="grid gap-2 text-sm font-semibold">Pilih gambar<input className="mt-2 rounded-xl border border-line p-3 text-sm" type="file" name="file" accept="image/jpeg,image/png,image/webp" required /></label><button className="button-primary mt-6">Upload</button>{message && <p className="mt-4 text-sm text-muted">{message}</p>}{url && <p className="mt-2 break-all rounded-xl bg-[#f8fafc] p-3 text-xs font-semibold text-green">{url}</p>}</form>; }

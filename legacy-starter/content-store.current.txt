@@ -1,0 +1,28 @@
+import "server-only";
+
+import { promises as fs } from "node:fs";
+import path from "node:path";
+import { defaultContent } from "./content-data";
+import type { SiteContent } from "./content-types";
+
+const contentPath = path.join(process.cwd(), "data", "site-content.json");
+
+async function ensureDataDirectory() {
+  await fs.mkdir(path.dirname(contentPath), { recursive: true });
+}
+
+export async function getSiteContent(): Promise<SiteContent> {
+  try {
+    const raw = await fs.readFile(contentPath, "utf8");
+    return JSON.parse(raw) as SiteContent;
+  } catch {
+    return defaultContent;
+  }
+}
+
+export async function saveSiteContent(content: SiteContent) {
+  await ensureDataDirectory();
+  await fs.writeFile(contentPath, JSON.stringify(content, null, 2), "utf8");
+  return content;
+}
+

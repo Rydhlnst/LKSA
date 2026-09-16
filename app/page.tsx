@@ -1,69 +1,52 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, BookOpen, Heart, Sparkles, Users } from "lucide-react";
+import { getSiteContent } from "@/lib/content-store";
+import { HeroCarousel } from "@/components/site/hero-carousel";
+import { PublicShell } from "@/components/site/public-shell";
+import { SectionHeading } from "@/components/site/section-heading";
 
-export default function Home() {
+const icons = { heart: Heart, book: BookOpen, sparkles: Sparkles, users: Users };
+
+export default async function Home() {
+  const content = await getSiteContent();
+  const latest = content.articles.filter((article) => article.status === "published").sort((a, b) => b.publishDate.localeCompare(a.publishDate)).slice(0, 3);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <PublicShell content={content}>
+      <HeroCarousel slides={content.heroSlides} />
+      <section className="site-container grid gap-12 py-20 lg:grid-cols-[.8fr_1.2fr] lg:items-center lg:py-28">
+        <div>
+          <SectionHeading eyebrow="Tentang Kami" title="Menjaga amanah pengasuhan dengan kasih dan pendidikan" description="LKSA Panti Asuhan Muhammadiyah Sumur Bandung mendampingi anak asuh dalam lingkungan yang aman, religius, dan penuh kebersamaan." />
+          <Link href="/tentang-kami" className="mt-7 inline-flex items-center gap-2 font-bold text-orange hover:gap-3">Baca Selengkapnya <ArrowRight className="h-4 w-4" /></Link>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {content.homeValues.filter((value) => value.active).map((value) => {
+            const Icon = icons[value.icon];
+            return <article key={value.id} className="rounded-2xl border border-line bg-white p-6 shadow-subtle transition hover:-translate-y-1 hover:shadow-card"><span className="mb-5 inline-flex rounded-xl bg-orange/10 p-3 text-orange"><Icon className="h-5 w-5" /></span><h3 className="font-heading text-lg font-bold text-ink">{value.title}</h3><p className="mt-2 text-sm leading-6 text-muted">{value.description}</p></article>;
+          })}
         </div>
-      </main>
-    </div>
+      </section>
+      <section className="bg-[#f8fafc] py-20 lg:py-24">
+        <div className="site-container grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-center">
+          <SectionHeading eyebrow="Cerita Kemandirian" title="RotiMu, usaha kreatif untuk memberdayakan anak asuh" description="Tonton video resmi LKSA Muhammadiyah Sumur Bandung tentang ikhtiar kemandirian panti melalui RotiMu." />
+          <div className="aspect-video overflow-hidden rounded-3xl border border-line bg-navy shadow-card">
+            <iframe className="h-full w-full" src="https://www.youtube.com/embed/F9WCHpAHtNA" title="Transformasi RotiMu - LKSA Muhammadiyah Sumur Bandung" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+          </div>
+        </div>
+      </section>
+      <section className="site-container py-20 lg:py-24">
+        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <SectionHeading eyebrow="Kabar Terbaru" title="Cerita dan kegiatan terbaru" description="Ikuti kegiatan pendidikan, pembinaan Al-Qur'an, dan kebersamaan anak asuh." />
+          <Link href="/berita" className="inline-flex shrink-0 items-center gap-2 font-bold text-orange">Lihat Semua Berita <ArrowRight className="h-4 w-4" /></Link>
+        </div>
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          {latest.map((article) => <article key={article.id} className="overflow-hidden rounded-2xl border border-line bg-white shadow-subtle"><div className="aspect-[16/10] bg-cover bg-center" style={{ backgroundImage: `url(${article.coverUrl})` }} /><div className="p-6"><p className="text-xs font-semibold uppercase tracking-wider text-orange">{article.publishDate}</p><h3 className="mt-3 font-heading text-xl font-bold leading-snug text-ink">{article.title}</h3><p className="mt-3 text-sm leading-6 text-muted">{article.excerpt}</p><Link href={`/berita/${article.slug}`} className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-ink hover:text-orange">Baca Artikel <ArrowRight className="h-4 w-4" /></Link></div></article>)}
+        </div>
+      </section>
+      <section className="site-container flex flex-col gap-8 py-20 md:flex-row md:items-center md:justify-between">
+        <SectionHeading eyebrow="Mari Bersama" title="Menanam kebaikan untuk masa depan yang lebih cerah" description="Dukungan Anda membantu menyediakan pendidikan, pengasuhan, dan kesempatan tumbuh bagi anak-anak asuh." />
+        <Link href="/donasi" className="button-primary shrink-0">Salurkan Donasi <ArrowRight className="ml-2 h-4 w-4" /></Link>
+      </section>
+    </PublicShell>
   );
 }
