@@ -25,8 +25,10 @@ function SocialIcon({ label }: { label: string }) {
 export function WhatsAppWidget({ settings }: { settings: SiteSettings }) {
   const [isOpen, setIsOpen] = useState(false);
   const panelId = useId();
-  const whatsappHref = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(settings.whatsappMessage)}`;
+  const whatsappHref = "https://wa.me/" + settings.whatsappNumber + "?text=" + encodeURIComponent(settings.whatsappMessage);
   const socialLinks = settings.socialLinks.filter((social) => social.href);
+  const facebookLink = socialLinks.find((social) => social.label.toLowerCase().includes("facebook"));
+  const tiktokLink = socialLinks.find((social) => social.label.toLowerCase().includes("tiktok"));
 
   useEffect(() => {
     if (!isOpen) return;
@@ -77,7 +79,7 @@ export function WhatsAppWidget({ settings }: { settings: SiteSettings }) {
                 <div className="grid gap-2 sm:grid-cols-2">
                   {socialLinks.map((social) => (
                     <a
-                      key={`${social.label}-${social.href}`}
+                      key={social.label + "-" + social.href}
                       href={social.href}
                       target="_blank"
                       rel="noreferrer"
@@ -95,18 +97,45 @@ export function WhatsAppWidget({ settings }: { settings: SiteSettings }) {
         </div>
       ) : null}
 
-      <button
-        type="button"
-        aria-expanded={isOpen}
-        aria-controls={panelId}
-        aria-label={isOpen ? "Tutup kanal kontak" : "Buka kanal kontak"}
-        onClick={() => setIsOpen((current) => !current)}
-        className="inline-flex items-center gap-2 rounded-full bg-green px-4 py-3 text-sm font-bold text-white shadow-elevated transition hover:-translate-y-0.5 hover:bg-green/90"
-      >
-        {isOpen ? <X className="h-5 w-5" /> : <MessageCircle className="h-5 w-5" />}
-        <span className="hidden sm:inline">{isOpen ? "Tutup" : "Chat WhatsApp"}</span>
-      </button>
+      <div className="flex items-center gap-2">
+        {facebookLink ? (
+          <a
+            href={facebookLink.href}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Buka Facebook LKSA"
+            title="Facebook"
+            className="inline-flex h-12 items-center gap-2 rounded-full bg-[#1877f2] px-3 text-sm font-bold text-white shadow-elevated transition hover:-translate-y-0.5 hover:brightness-105 sm:px-4"
+          >
+            <Globe2 className="h-5 w-5" />
+            <span className="hidden sm:inline">Facebook</span>
+          </a>
+        ) : null}
+        {tiktokLink ? (
+          <a
+            href={tiktokLink.href}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Buka TikTok LKSA"
+            title="TikTok"
+            className="inline-flex h-12 items-center gap-2 rounded-full bg-ink px-3 text-sm font-bold text-white shadow-elevated transition hover:-translate-y-0.5 hover:bg-ink/90 sm:px-4"
+          >
+            <Music2 className="h-5 w-5" />
+            <span className="hidden sm:inline">TikTok</span>
+          </a>
+        ) : null}
+        <button
+          type="button"
+          aria-expanded={isOpen}
+          aria-controls={panelId}
+          aria-label={isOpen ? "Tutup kanal kontak" : "Buka kanal WhatsApp dan kanal kontak"}
+          onClick={() => setIsOpen((current) => !current)}
+          className="inline-flex h-12 items-center gap-2 rounded-full bg-green px-3 text-sm font-bold text-white shadow-elevated transition hover:-translate-y-0.5 hover:bg-green/90 sm:px-4"
+        >
+          {isOpen ? <X className="h-5 w-5" /> : <MessageCircle className="h-5 w-5" />}
+          <span className="hidden sm:inline">{isOpen ? "Tutup" : "WhatsApp"}</span>
+        </button>
+      </div>
     </div>
   );
 }
-
