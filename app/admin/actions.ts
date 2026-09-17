@@ -36,8 +36,9 @@ export async function savePageAction(formData: FormData) {
   await requireAdmin();
   const content = await getSiteContent();
   const id = value(formData, "id") || nextId("page");
-  const page = { id, slug: value(formData, "slug"), title: value(formData, "title"), intro: value(formData, "intro"), body: value(formData, "body"), status: value(formData, "status") as "draft" | "published" | "archived", updatedAt: new Date().toISOString().slice(0, 10) };
   const existing = content.pages.findIndex((item) => item.id === id);
+  const previous = content.pages[existing];
+  const page = { id, slug: value(formData, "slug"), eyebrow: previous?.eyebrow ?? "Profil Panti", sections: previous?.sections ?? {}, title: value(formData, "title"), intro: value(formData, "intro"), body: value(formData, "body"), status: value(formData, "status") as "draft" | "published" | "archived", updatedAt: new Date().toISOString().slice(0, 10) };
   if (existing >= 0) content.pages[existing] = page; else content.pages.push(page);
   await saveSiteContent(content); revalidatePath(`/${page.slug}`); redirect("/admin/pages?saved=1");
 }

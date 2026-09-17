@@ -46,11 +46,22 @@ export type HomeContent = {
   support: { eyebrow: string; title: string; description: string; ctaLabel: string };
 };
 
+export type PageSectionCopy = {
+  eyebrow: string;
+  title: string;
+  description: string;
+};
+
+export type PageSections = Partial<Record<
+  "account" | "transparency" | "legal" | "organigram" | "weekday" | "weekend",
+  PageSectionCopy
+>>;
+
 export type PageContent = {
   id: string;
   slug: string;
-  // Legacy page actions omit this field until the dashboard migration.
-  eyebrow?: string;
+  eyebrow: string;
+  sections: PageSections;
   title: string;
   intro: string;
   body: string;
