@@ -38,6 +38,14 @@ export type HomeValue = {
   active: boolean;
 };
 
+export type HomeContent = {
+  about: { eyebrow: string; title: string; description: string; ctaLabel: string };
+  video: { eyebrow: string; title: string; description: string; youtubeUrl: string };
+  gallery: { eyebrow: string; title: string; description: string; ctaLabel: string };
+  news: { eyebrow: string; title: string; description: string; ctaLabel: string };
+  support: { eyebrow: string; title: string; description: string; ctaLabel: string };
+};
+
 export type PageContent = {
   id: string;
   slug: string;
@@ -131,7 +139,9 @@ export type DonorEntry = {
 };
 
 export type SiteContent = {
+  contentVersion: number;
   settings: SiteSettings;
+  home: HomeContent;
   heroSlides: HeroSlide[];
   homeValues: HomeValue[];
   pages: PageContent[];

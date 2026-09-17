@@ -1,13 +1,14 @@
 import type { SiteContent } from "./content-types";
 
 export const defaultContent: SiteContent = {
+  contentVersion: 2,
   settings: {
     organizationName: "LKSA Panti Asuhan Muhammadiyah Sumur Bandung",
     shortName: "LKSA Muhammadiyah Sumur Bandung",
-    logoPrimary: "/media/logo-lksa.jpeg",
+    logoPrimary: "/media/logo-lksa-transparent.png",
     logoSecondary: "",
-    address: "Jl. A.H. Nasution No. 140, Kel. Sukamiskin, Kec. Arcamanik, Kota Bandung 40293",
-    phone: "0813 2030 7090",
+    address: "Jl. Veteran No.118 / 34 A, Kb. Pisang, Kec. Sumur Bandung, Kota Bandung, Jawa Barat 40112",
+    phone: "+62 22 4210572",
     email: "lksapamuhsmg@gmail.com",
     mapUrl: "https://maps.app.goo.gl/yhShdyuhzkv1bcz5A?g_st=aw",
     socialLinks: [
@@ -23,6 +24,13 @@ export const defaultContent: SiteContent = {
     whatsappResponseTime: "Biasanya membalas dalam beberapa jam.",
     whatsappGreeting: "Assalamu'alaikum. Ada yang bisa kami bantu terkait informasi panti, kunjungan, atau donasi?",
     whatsappMessage: "Assalamu'alaikum Wr. Wb. Saya ingin mengetahui lebih lanjut tentang LKSA Panti Asuhan Muhammadiyah Sumur Bandung, kegiatan anak asuh, kunjungan, atau donasi.",
+  },
+  home: {
+    about: { eyebrow: "Tentang Kami", title: "Menjaga amanah pengasuhan dengan kasih dan pendidikan", description: "LKSA Panti Asuhan Muhammadiyah Sumur Bandung mendampingi anak asuh dalam lingkungan yang aman, religius, dan penuh kebersamaan.", ctaLabel: "Baca Selengkapnya" },
+    video: { eyebrow: "Cerita Kemandirian", title: "RotiMu, usaha kreatif untuk memberdayakan anak asuh", description: "Tonton video resmi LKSA Muhammadiyah Sumur Bandung tentang ikhtiar kemandirian panti melalui RotiMu.", youtubeUrl: "https://www.youtube.com/embed/F9WCHpAHtNA" },
+    gallery: { eyebrow: "Dokumentasi", title: "Momen yang tumbuh bersama", description: "Lihat kegiatan, kebersamaan, dan proses belajar anak asuh di lingkungan LKSA.", ctaLabel: "Lihat Semua Galeri" },
+    news: { eyebrow: "Kabar Terbaru", title: "Cerita dan kegiatan terbaru", description: "Ikuti kegiatan pendidikan, pembinaan Al-Qur'an, dan kebersamaan anak asuh.", ctaLabel: "Lihat Semua Berita" },
+    support: { eyebrow: "Mari Bersama", title: "Menanam kebaikan untuk masa depan yang lebih cerah", description: "Dukungan Anda membantu menyediakan pendidikan, pengasuhan, dan kesempatan tumbuh bagi anak-anak asuh.", ctaLabel: "Salurkan Donasi" },
   },
   heroSlides: [
     { id: "hero-1", title: "Tumbuh bersama dalam iman, ilmu, dan kepedulian", description: "Mendampingi anak asuh melalui pengasuhan yang aman, pendidikan, dan pembinaan Al-Qur'an.", imageUrl: "/media/hero-kegiatan-pengajian.jpeg", ctaLabel: "Lihat Kegiatan", ctaHref: "/galeri", order: 1, active: true },
@@ -58,6 +66,7 @@ export const defaultContent: SiteContent = {
   articles: [
     { id: "article-1", title: "Pembinaan Al-Qur'an dalam Keseharian Anak Asuh", slug: "pembinaan-al-quran-anak-asuh", excerpt: "Kegiatan mengaji dan membaca Al-Qur'an menjadi bagian dari rutinitas pembinaan anak asuh.", coverUrl: "/media/hero-kegiatan-pengajian.jpeg", body: "Kegiatan pembinaan Al-Qur'an menjadi bagian penting dalam keseharian anak asuh LKSA Panti Asuhan Muhammadiyah Sumur Bandung. Anak-anak belajar bersama dalam suasana yang dekat, saling mendukung, dan didampingi oleh pengasuh serta pembina.", publishDate: "2026-09-16", status: "published", featured: true, updatedAt: "2026-09-16" },
     { id: "article-2", title: "Belajar, Bermain, dan Bertumbuh Bersama", slug: "belajar-bermain-dan-bertumbuh-bersama", excerpt: "Kegiatan bersama membangun rasa percaya diri, persaudaraan, dan kepedulian anak asuh.", coverUrl: "/media/kegiatan-bersama.jpeg", body: "Lingkungan panti menjadi ruang bagi anak-anak untuk belajar, berinteraksi, mengikuti kegiatan sosial, dan mengembangkan minat. Setiap momen kebersamaan adalah bagian dari proses tumbuh yang ingin kami jaga bersama.", publishDate: "2026-09-16", status: "published", featured: false, updatedAt: "2026-09-16" },
+    { id: "article-rotimu", title: "RotiMu: Ikhtiar Kemandirian dan Pemberdayaan Anak Asuh", slug: "rotimu-kemandirian-panti-asuhan", excerpt: "RotiMu menjadi usaha kreatif LKSA Muhammadiyah Sumur Bandung untuk mendukung kemandirian lembaga dan keterampilan anak asuh.", coverUrl: "/media/kunjungan-donatur.jpeg", body: "RotiMu adalah usaha ekonomi produktif LKSA Muhammadiyah Sumur Bandung yang dikembangkan untuk mendukung kemandirian panti dan pemberdayaan anak-anak asuh. Anak-anak dikenalkan pada proses produksi, penjualan, dan keterampilan yang dapat menjadi bekal setelah menyelesaikan masa pengasuhan.\n\nInformasi ini bersumber dari video resmi LKSA Muhammadiyah Sumur Bandung berjudul Transformasi RotiMu: Inovasi Muhammadiyah Social Fund. Saksikan video lengkapnya melalui kanal resmi kami.", publishDate: "2024-11-16", status: "published", featured: true, updatedAt: "2026-09-16" },
   ],
   galleries: [
     { id: "gallery-1", url: "/media/hero-kegiatan-pengajian.jpeg", alt: "Anak-anak mengikuti kegiatan pembinaan bersama", caption: "Kegiatan pembinaan bersama anak asuh.", order: 1, visible: true },
@@ -74,8 +83,13 @@ export const defaultContent: SiteContent = {
     { id: "gallery-12", url: "/media/halaqah-putri.jpeg", alt: "Anak-anak putri mengikuti halaqah", caption: "Halaqah dan pembinaan putri.", order: 12, visible: true },
     { id: "gallery-13", url: "/media/halaqah-putri-2.jpeg", alt: "Anak-anak putri membaca Al-Qur'an bersama", caption: "Kegiatan mengaji putri.", order: 13, visible: true },
   ],
-  documents: [],
-  donation: { heading: "Dukung Pengasuhan dan Pendidikan Anak", description: "Setiap dukungan membantu memenuhi kebutuhan pendidikan, pembinaan Al-Qur'an, kesehatan, dan pengasuhan anak-anak LKSA.", bankName: "Informasi transfer tersedia melalui WhatsApp resmi", accountNumber: "", accountHolder: "Hubungi admin untuk detail donasi", qrisUrl: "", confirmationMessage: "Assalamu'alaikum, saya ingin mendapatkan informasi donasi untuk LKSA Panti Asuhan Muhammadiyah Sumur Bandung.", confirmationWhatsapp: "6281223823617", transparencyHeading: "Transparansi Donasi" },
+  documents: [
+    { id: "doc-sertifikat", title: "Sertifikat Daftar Ulang Yayasan LKSA 2026", description: "Dokumen penetapan terdaftar lembaga kesejahteraan sosial.", href: "/documents/sertifikat-daftar-ulang-lksa-2026.pdf", category: "legalitas", published: true },
+    { id: "doc-profil", title: "Profil Panti Asuhan", description: "Profil dan informasi kelembagaan LKSA.", href: "/documents/profil-panti-asuhan.pdf", category: "profil", published: true },
+    { id: "doc-pendirian", title: "SK Pendirian AUM LKSA", description: "Surat keputusan pendirian Amal Usaha Muhammadiyah LKSA.", href: "/documents/sk-pendirian-aum-lksa.pdf", category: "legalitas", published: true },
+    { id: "doc-struktur", title: "SK Struktur Organisasi Pengurus LKSA", description: "Surat keputusan struktur organisasi pengurus LKSA.", href: "/documents/sk-struktur-organisasi-pengurus-lksa.pdf", category: "organisasi", published: true },
+  ],
+  donation: { heading: "Dukung Pengasuhan dan Pendidikan Anak", description: "Donasi Anda membantu kebutuhan pendidikan, pembinaan Al-Qur'an, kesehatan, dan pengasuhan anak-anak LKSA.", bankName: "BANK MANDIRI - KC BANDUNG SURAPATI", accountNumber: "131-00-1673433-3", accountHolder: "Yayasan Panti Asuhan Muhammadiyah", qrisUrl: "", confirmationMessage: "Assalamu'alaikum, saya sudah melakukan donasi untuk LKSA Panti Asuhan Muhammadiyah Sumur Bandung dan ingin melakukan konfirmasi.", confirmationWhatsapp: "6281223823617", transparencyHeading: "Transparansi dan Legalitas Donasi" },
   ledger: [],
   donors: [],
 };

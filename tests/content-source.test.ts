@@ -1,0 +1,83 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { defaultContent } from "../lib/content-data.ts";
+import { mergeSeedContent, seedCanonicalContent } from "../lib/content-seed.ts";
+import type { SiteContent } from "../lib/content-types.ts";
+
+test("seed merge preserves dashboard edits and adds missing records once", () => {
+  const existing = structuredClone(defaultContent);
+  existing.settings.organizationName = "Edited from dashboard";
+  existing.articles = existing.articles.slice(0, 1);
+  const merged = mergeSeedContent(existing, defaultContent);
+  assert.equal(merged.settings.organizationName, "Edited from dashboard");
+  assert.equal(new Set(merged.articles.map((item) => item.id)).size, merged.articles.length);
+  assert.equal(merged.articles.length, defaultContent.articles.length);
+});
+
+test("running the merge twice does not duplicate collections", () => {
+  const first = mergeSeedContent(defaultContent, defaultContent);
+  const second = mergeSeedContent(first, defaultContent);
+  assert.equal(second.articles.length, first.articles.length);
+  assert.equal(second.documents.length, first.documents.length);
+  assert.equal(second.galleries.length, first.galleries.length);
+  assert.deepEqual(second, first);
+});
+
+test("merge fills empty fields while preserving edited home, donation, and page fields", () => {
+  const existing = structuredClone(defaultContent);
+  existing.settings.phone = "   ";
+  existing.donation.accountHolder = "Dashboard account holder";
+  existing.donation.accountNumber = "";
+  existing.home.about.title = "Dashboard homepage title";
+  existing.home.about.description = "";
+  existing.pages[0].title = "Dashboard page title";
+  existing.pages[0].body = "Dashboard page body";
+  existing.pages[0].intro = "";
+  const merged = mergeSeedContent(existing, defaultContent);
+  assert.equal(merged.settings.phone, "+62 22 4210572");
+  assert.equal(merged.donation.accountHolder, "Dashboard account holder");
+  assert.equal(merged.donation.accountNumber, "131-00-1673433-3");
+  assert.equal(merged.home.about.title, "Dashboard homepage title");
+  assert.equal(merged.home.about.description, defaultContent.home.about.description);
+  assert.equal(merged.pages[0].title, "Dashboard page title");
+  assert.equal(merged.pages[0].body, "Dashboard page body");
+  assert.equal(merged.pages[0].intro, defaultContent.pages[0].intro);
+  assert.equal(existing.settings.phone, "   ");
+  assert.equal(existing.home.about.description, "");
+});
+
+test("merge preserves collection order, custom records, and false flags", () => {
+  const existing = structuredClone(defaultContent);
+  existing.articles = [
+    { ...existing.articles[1], title: "Edited article", featured: false },
+    { ...existing.articles[0], id: "dashboard-article", status: "draft" },
+  ];
+  existing.galleries[0].visible = false;
+  existing.contentVersion = 4;
+  const merged = mergeSeedContent(existing, defaultContent);
+  assert.deepEqual(merged.articles.slice(0, 2), existing.articles);
+  assert.deepEqual(merged.articles.map((item) => item.id), ["article-2", "dashboard-article", "article-1", "article-rotimu"]);
+  assert.equal(merged.galleries[0].visible, false);
+  assert.equal(merged.contentVersion, 4);
+});
+
+test("merge upgrades legacy aggregates with missing home, version, and collections", () => {
+  const legacy: Partial<SiteContent> = structuredClone(defaultContent);
+  delete legacy.home;
+  delete legacy.contentVersion;
+  delete legacy.documents;
+  const merged = mergeSeedContent(legacy as SiteContent, defaultContent);
+  assert.equal(merged.contentVersion, 2);
+  assert.deepEqual(merged.home, defaultContent.home);
+  assert.deepEqual(merged.documents.map((item) => item.id), ["doc-sertifikat", "doc-profil", "doc-pendirian", "doc-struktur"]);
+});
+
+test("canonical seeding requires DATABASE_URL without logging credentials", async () => {
+  const previous = process.env.DATABASE_URL;
+  delete process.env.DATABASE_URL;
+  try {
+    await assert.rejects(seedCanonicalContent(), { message: "DATABASE_URL is required to seed canonical content." });
+  } finally {
+    if (previous !== undefined) process.env.DATABASE_URL = previous;
+  }
+});
