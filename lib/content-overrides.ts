@@ -16,7 +16,7 @@ export function applyContentOverrides(content: SiteContent): SiteContent {
         title: "RotiMu: Ikhtiar Kemandirian dan Pemberdayaan Anak Asuh",
         slug: "rotimu-kemandirian-panti-asuhan",
         excerpt: "RotiMu menjadi usaha kreatif LKSA Muhammadiyah Sumur Bandung untuk mendukung kemandirian lembaga dan keterampilan anak asuh.",
-        coverUrl: "/media/kegiatan-bersama.jpeg",
+        coverUrl: "/media/kunjungan-donatur.jpeg",
         body: "RotiMu adalah usaha ekonomi produktif LKSA Muhammadiyah Sumur Bandung yang dikembangkan untuk mendukung kemandirian panti dan pemberdayaan anak-anak asuh. Anak-anak dikenalkan pada proses produksi, penjualan, dan keterampilan yang dapat menjadi bekal setelah menyelesaikan masa pengasuhan.\n\nInformasi ini bersumber dari video resmi LKSA Muhammadiyah Sumur Bandung berjudul Transformasi RotiMu: Inovasi Muhammadiyah Social Fund. Saksikan video lengkapnya melalui kanal resmi kami.",
         publishDate: "2024-11-16",
         status: "published",
