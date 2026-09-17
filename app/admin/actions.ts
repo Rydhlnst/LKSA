@@ -4,7 +4,9 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAdminSession, credentialsMatch, destroyAdminSession, requireAdmin } from "@/lib/auth";
 import { getSiteContent, saveSiteContent } from "@/lib/content-store";
-import { articleSchema, loginSchema, settingsSchema } from "@/lib/validation";
+import { deleteStoredMedia } from "@/lib/media-storage";
+import { getImageReferences } from "@/lib/media-references";
+import { articleSchema, gallerySchema, loginSchema, settingsSchema } from "@/lib/validation";
 
 const value = (formData: FormData, key: string) => String(formData.get(key) ?? "").trim();
 const booleanValue = (formData: FormData, key: string) => formData.get(key) === "on" || formData.get(key) === "true";
@@ -48,6 +50,33 @@ export async function saveArticleAction(formData: FormData) {
   await requireAdmin(); const content = await getSiteContent(); const raw = { id: value(formData, "id") || undefined, title: value(formData, "title"), slug: value(formData, "slug"), excerpt: value(formData, "excerpt"), body: value(formData, "body"), publishDate: value(formData, "publishDate"), status: value(formData, "status"), featured: booleanValue(formData, "featured") }; const parsed = articleSchema.safeParse(raw); if (!parsed.success) redirect("/admin/news?error=validation"); const id = parsed.data.id || nextId("article"); const article = { ...parsed.data, id, coverUrl: value(formData, "coverUrl") || content.articles.find((item) => item.id === id)?.coverUrl || "", updatedAt: new Date().toISOString().slice(0, 10) }; const index = content.articles.findIndex((item) => item.id === id); if (index >= 0) content.articles[index] = article; else content.articles.push(article); await saveSiteContent(content); revalidatePath("/berita"); revalidatePath(`/berita/${article.slug}`); redirect("/admin/news?saved=1");
 }
 
+export async function saveGalleryAction(formData: FormData) {
+  await requireAdmin();
+  const content = await getSiteContent();
+  const parsed = gallerySchema.safeParse({ id: value(formData, "id") || undefined, url: value(formData, "url"), alt: value(formData, "alt"), caption: value(formData, "caption"), order: value(formData, "order"), visible: booleanValue(formData, "visible") });
+  if (!parsed.success) redirect("/admin/gallery?error=validation");
+  const id = parsed.data.id || nextId("gallery");
+  const image = { ...parsed.data, id };
+  const index = content.galleries.findIndex((item) => item.id === id);
+  if (index >= 0) content.galleries[index] = image; else content.galleries.push(image);
+  await saveSiteContent(content);
+  revalidatePath("/galeri");
+  redirect("/admin/gallery?saved=1");
+}
+
+export async function deleteGalleryImageAction(formData: FormData) {
+  await requireAdmin();
+  const content = await getSiteContent();
+  const id = value(formData, "id");
+  const image = content.galleries.find((item) => item.id === id);
+  if (!image) redirect("/admin/gallery?error=not-found");
+  content.galleries = content.galleries.filter((item) => item.id !== id);
+  await saveSiteContent(content);
+  if (!getImageReferences(content, image.url).length) await deleteStoredMedia(image.url).catch(() => undefined);
+  revalidatePath("/galeri");
+  redirect("/admin/gallery?deleted=1");
+}
+
 export async function saveOrganizationAction(formData: FormData) { await requireAdmin(); const content = await getSiteContent(); const id = value(formData, "id") || nextId("org"); const node = { id, name: value(formData, "name"), role: value(formData, "role"), parentId: value(formData, "parentId") || null, order: Number(value(formData, "order")) || 1, active: booleanValue(formData, "active") }; const index = content.organization.findIndex((item) => item.id === id); if (index >= 0) content.organization[index] = node; else content.organization.push(node); await saveSiteContent(content); revalidatePath("/struktur-organisasi"); redirect("/admin/organization?saved=1"); }
 
 export async function saveScheduleAction(formData: FormData) { await requireAdmin(); const content = await getSiteContent(); const id = value(formData, "id") || nextId("schedule"); const entry = { id, group: (value(formData, "group") || "weekday") as "weekday" | "weekend", period: (value(formData, "period") || "pagi") as "pagi" | "siang" | "sore" | "malam", time: value(formData, "time"), activity: value(formData, "activity"), location: value(formData, "location"), coordinator: value(formData, "coordinator"), order: Number(value(formData, "order")) || 1, active: booleanValue(formData, "active") }; const index = content.schedule.findIndex((item) => item.id === id); if (index >= 0) content.schedule[index] = entry; else content.schedule.push(entry); await saveSiteContent(content); revalidatePath("/profil/jadwal-kegiatan"); redirect("/admin/schedule?saved=1"); }
@@ -55,4 +84,3 @@ export async function saveScheduleAction(formData: FormData) { await requireAdmi
 export async function saveDonationAction(formData: FormData) { await requireAdmin(); const content = await getSiteContent(); content.donation = { ...content.donation, heading: value(formData, "heading"), description: value(formData, "description"), bankName: value(formData, "bankName"), accountNumber: value(formData, "accountNumber"), accountHolder: value(formData, "accountHolder"), confirmationMessage: value(formData, "confirmationMessage"), confirmationWhatsapp: value(formData, "confirmationWhatsapp"), transparencyHeading: value(formData, "transparencyHeading") }; await saveSiteContent(content); revalidatePath("/donasi"); redirect("/admin/donation?saved=1"); }
 
 export async function saveLedgerAction(formData: FormData) { await requireAdmin(); const content = await getSiteContent(); const entry = { id: nextId("ledger"), type: (value(formData, "type") || "income") as "income" | "expense", description: value(formData, "description"), amount: Number(value(formData, "amount")) || 0, date: value(formData, "date"), status: (value(formData, "status") || "completed") as "planned" | "completed", public: booleanValue(formData, "public") }; content.ledger.push(entry); await saveSiteContent(content); revalidatePath("/donasi"); redirect("/admin/donation?saved=1"); }
-

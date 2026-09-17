@@ -1,27 +1,21 @@
-import { promises as fs } from "node:fs";
-import path from "node:path";
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/auth";
+import { getSiteContent } from "@/lib/content-store";
+import { db } from "@/lib/db";
+import { mediaAssets } from "@/lib/db/schema";
+import { getImageReferences } from "@/lib/media-references";
+import { deleteStoredMedia, hasAnyR2Config, hasCompleteR2Config, storeMedia } from "@/lib/media-storage";
+import { mediaDeleteSchema } from "@/lib/validation";
 
 export const runtime = "nodejs";
 
 const allowed = new Map([["image/jpeg", "jpg"], ["image/png", "png"], ["image/webp", "webp"]]);
 const maxFileSize = 5 * 1024 * 1024;
 
-const r2Config = {
-  endpoint: process.env.R2_ENDPOINT,
-  region: process.env.R2_REGION ?? "auto",
-  bucket: process.env.R2_BUCKET,
-  accessKeyId: process.env.R2_ACCESS_KEY_ID,
-  secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
-  publicUrl: process.env.R2_PUBLIC_URL,
-};
-const hasAnyR2Config = Object.values(r2Config).some(Boolean);
-const hasCompleteR2Config = Object.values(r2Config).every(Boolean);
-const r2Client = hasCompleteR2Config ? new S3Client({ endpoint: r2Config.endpoint, region: r2Config.region, credentials: { accessKeyId: r2Config.accessKeyId!, secretAccessKey: r2Config.secretAccessKey! } }) : null;
-
-function storageError() { return NextResponse.json({ error: "Penyimpanan media belum dikonfigurasi dengan lengkap." }, { status: 500 }); }
+function storageError() {
+  return NextResponse.json({ error: "Penyimpanan media belum dikonfigurasi dengan lengkap." }, { status: 500 });
+}
 
 export async function POST(request: Request) {
   if (!(await isAdminAuthenticated())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -36,19 +30,41 @@ export async function POST(request: Request) {
 
   const filename = `${Date.now()}-${crypto.randomUUID()}.${extension}`;
   const buffer = Buffer.from(await file.arrayBuffer());
+  let storedUrl = "";
 
   try {
-    if (r2Client && r2Config.bucket && r2Config.publicUrl) {
-      const key = `uploads/${filename}`;
-      await r2Client.send(new PutObjectCommand({ Bucket: r2Config.bucket, Key: key, Body: buffer, ContentType: file.type, CacheControl: "public, max-age=31536000, immutable" }));
-      return NextResponse.json({ url: `${r2Config.publicUrl.replace(/\/$/, "")}/${key}` });
-    }
-
-    const directory = path.join(process.cwd(), "public", "uploads");
-    await fs.mkdir(directory, { recursive: true });
-    await fs.writeFile(path.join(directory, filename), buffer);
-    return NextResponse.json({ url: `/uploads/${filename}` });
+    const stored = await storeMedia({ filename, body: buffer, contentType: file.type });
+    storedUrl = stored.url;
+    const assetId = `media-${crypto.randomUUID()}`;
+    if (db) await db.insert(mediaAssets).values({ id: assetId, url: stored.url, filename: stored.filename, mimeType: stored.mimeType, alt: "" });
+    return NextResponse.json({ url: stored.url, asset: { id: assetId, url: stored.url, filename: stored.filename, mimeType: stored.mimeType, alt: "", createdAt: new Date().toISOString() } });
   } catch {
+    if (storedUrl) await deleteStoredMedia(storedUrl).catch(() => undefined);
     return NextResponse.json({ error: "Upload gagal. Silakan coba lagi." }, { status: 502 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  if (!(await isAdminAuthenticated())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (hasAnyR2Config && !hasCompleteR2Config) return storageError();
+
+  const parsed = mediaDeleteSchema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) return NextResponse.json({ error: "Data media tidak valid." }, { status: 400 });
+
+  const row = parsed.data.id && db
+    ? (await db.select().from(mediaAssets).where(eq(mediaAssets.id, parsed.data.id)).limit(1))[0]
+    : undefined;
+  if (parsed.data.id && !row) return NextResponse.json({ error: "Media tidak ditemukan." }, { status: 404 });
+  if (row && row.url !== parsed.data.url) return NextResponse.json({ error: "URL media tidak cocok." }, { status: 400 });
+
+  const references = getImageReferences(await getSiteContent(), parsed.data.url);
+  if (references.length) return NextResponse.json({ error: `Media masih digunakan: ${references.join(", ")}. Hapus tautannya dari konten terlebih dahulu.` }, { status: 409 });
+
+  try {
+    await deleteStoredMedia(parsed.data.url);
+    if (row && db) await db.delete(mediaAssets).where(eq(mediaAssets.id, row.id));
+    return NextResponse.json({ ok: true });
+  } catch {
+    return NextResponse.json({ error: "Media tidak dapat dihapus dari penyimpanan." }, { status: 502 });
   }
 }

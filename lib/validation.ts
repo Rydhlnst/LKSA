@@ -30,3 +30,16 @@ export const articleSchema = z.object({
   featured: z.boolean().default(false),
 });
 
+export const gallerySchema = z.object({
+  id: z.string().optional(),
+  url: z.string().min(1).max(2000),
+  alt: z.string().min(1).max(240),
+  caption: z.string().max(300),
+  order: z.coerce.number().int().min(1).max(9999),
+  visible: z.boolean().default(true),
+});
+
+export const mediaDeleteSchema = z.object({
+  id: z.string().min(1).optional(),
+  url: z.string().min(1).max(2000).refine((value) => value.startsWith("/uploads/") || /^https?:\/\//.test(value), "URL media tidak valid."),
+});
