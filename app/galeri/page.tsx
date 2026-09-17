@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Images } from "lucide-react";
 import { getSiteContent } from "@/lib/content-store";
@@ -5,15 +6,17 @@ import { PublicShell } from "@/components/site/public-shell";
 
 export default async function GalleryPage() {
   const content = await getSiteContent();
+  const page = content.pages.find((item) => item.slug === "galeri" && item.status === "published");
+  if (!page) notFound();
   const images = content.galleries.filter((image) => image.visible).sort((a, b) => a.order - b.order);
 
   return (
     <PublicShell content={content}>
       <section className="bg-[#f8fafc] py-16 md:py-24">
         <div className="site-container">
-          <span className="eyebrow">Dokumentasi</span>
-          <h1 className="mt-5 font-heading text-4xl font-bold text-ink md:text-6xl">Galeri Kegiatan</h1>
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-muted">Momen-momen berharga dan dokumentasi aktivitas di lingkungan panti asuhan kami.</p>
+          <span className="eyebrow">{page.eyebrow}</span>
+          <h1 className="mt-5 font-heading text-4xl font-bold text-ink md:text-6xl">{page.title}</h1>
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-muted">{page.intro}</p>
         </div>
       </section>
       <section className="site-container py-16 md:py-24">

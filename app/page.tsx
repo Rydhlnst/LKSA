@@ -19,8 +19,8 @@ export default async function Home() {
       <HeroCarousel slides={content.heroSlides} />
       <section className="site-container grid gap-12 py-20 lg:grid-cols-[.8fr_1.2fr] lg:items-center lg:py-28">
         <div>
-          <SectionHeading eyebrow="Tentang Kami" title="Menjaga amanah pengasuhan dengan kasih dan pendidikan" description="LKSA Panti Asuhan Muhammadiyah Sumur Bandung mendampingi anak asuh dalam lingkungan yang aman, religius, dan penuh kebersamaan." />
-          <Link href="/tentang-kami" className="mt-7 inline-flex items-center gap-2 font-bold text-orange hover:gap-3">Baca Selengkapnya <ArrowRight className="h-4 w-4" /></Link>
+          <SectionHeading eyebrow={content.home.about.eyebrow} title={content.home.about.title} description={content.home.about.description} />
+          <Link href="/tentang-kami" className="mt-7 inline-flex items-center gap-2 font-bold text-orange hover:gap-3">{content.home.about.ctaLabel} <ArrowRight className="h-4 w-4" /></Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           {content.homeValues.filter((value) => value.active).map((value) => {
@@ -31,16 +31,16 @@ export default async function Home() {
       </section>
       <section className="bg-[#f8fafc] py-20 lg:py-24">
         <div className="site-container grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-center">
-          <SectionHeading eyebrow="Cerita Kemandirian" title="RotiMu, usaha kreatif untuk memberdayakan anak asuh" description="Tonton video resmi LKSA Muhammadiyah Sumur Bandung tentang ikhtiar kemandirian panti melalui RotiMu." />
+          <SectionHeading eyebrow={content.home.video.eyebrow} title={content.home.video.title} description={content.home.video.description} />
           <div className="aspect-video overflow-hidden rounded-3xl border border-line bg-navy shadow-card">
-            <iframe className="h-full w-full" src="https://www.youtube.com/embed/F9WCHpAHtNA" title="Transformasi RotiMu - LKSA Muhammadiyah Sumur Bandung" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+            <iframe className="h-full w-full" src={content.home.video.youtubeUrl} title={content.home.video.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
           </div>
         </div>
       </section>
       <section id="galeri" className="site-container py-20 lg:py-24">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <SectionHeading eyebrow="Dokumentasi" title="Momen yang tumbuh bersama" description="Lihat kegiatan, kebersamaan, dan proses belajar anak asuh di lingkungan LKSA." />
-          <Link href="/galeri" className="inline-flex shrink-0 items-center gap-2 font-bold text-orange">Lihat Semua Galeri <ArrowRight className="h-4 w-4" /></Link>
+          <SectionHeading eyebrow={content.home.gallery.eyebrow} title={content.home.gallery.title} description={content.home.gallery.description} />
+          <Link href="/galeri" className="inline-flex shrink-0 items-center gap-2 font-bold text-orange">{content.home.gallery.ctaLabel} <ArrowRight className="h-4 w-4" /></Link>
         </div>
         {gallery.length ? (
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -62,16 +62,16 @@ export default async function Home() {
       </section>
       <section className="site-container py-20 lg:py-24">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <SectionHeading eyebrow="Kabar Terbaru" title="Cerita dan kegiatan terbaru" description="Ikuti kegiatan pendidikan, pembinaan Al-Qur'an, dan kebersamaan anak asuh." />
-          <Link href="/berita" className="inline-flex shrink-0 items-center gap-2 font-bold text-orange">Lihat Semua Berita <ArrowRight className="h-4 w-4" /></Link>
+          <SectionHeading eyebrow={content.home.news.eyebrow} title={content.home.news.title} description={content.home.news.description} />
+          <Link href="/berita" className="inline-flex shrink-0 items-center gap-2 font-bold text-orange">{content.home.news.ctaLabel} <ArrowRight className="h-4 w-4" /></Link>
         </div>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {latest.map((article) => <article key={article.id} className="overflow-hidden rounded-2xl border border-line bg-white shadow-subtle"><div className="aspect-[16/10] bg-cover bg-center" style={{ backgroundImage: `url(${article.coverUrl})` }} /><div className="p-6"><p className="text-xs font-semibold uppercase tracking-wider text-orange">{article.publishDate}</p><h3 className="mt-3 font-heading text-xl font-bold leading-snug text-ink">{article.title}</h3><p className="mt-3 text-sm leading-6 text-muted">{article.excerpt}</p><Link href={`/berita/${article.slug}`} className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-ink hover:text-orange">Baca Artikel <ArrowRight className="h-4 w-4" /></Link></div></article>)}
         </div>
       </section>
       <section className="site-container flex flex-col gap-8 py-20 md:flex-row md:items-center md:justify-between">
-        <SectionHeading eyebrow="Mari Bersama" title="Menanam kebaikan untuk masa depan yang lebih cerah" description="Dukungan Anda membantu menyediakan pendidikan, pengasuhan, dan kesempatan tumbuh bagi anak-anak asuh." />
-        <Link href="/donasi" className="button-primary shrink-0">Salurkan Donasi <ArrowRight className="ml-2 h-4 w-4" /></Link>
+        <SectionHeading eyebrow={content.home.support.eyebrow} title={content.home.support.title} description={content.home.support.description} />
+        <Link href="/donasi" className="button-primary shrink-0">{content.home.support.ctaLabel} <ArrowRight className="ml-2 h-4 w-4" /></Link>
       </section>
     </PublicShell>
   );

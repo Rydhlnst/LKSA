@@ -49,6 +49,8 @@ export type HomeContent = {
 export type PageContent = {
   id: string;
   slug: string;
+  // Legacy page actions omit this field until the dashboard migration.
+  eyebrow?: string;
   title: string;
   intro: string;
   body: string;
