@@ -1,6 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BookOpen, Heart, Sparkles, Users } from "lucide-react";
 import { getSiteContent } from "@/lib/content-store";
+import { getGalleryPreview } from "@/lib/gallery-presentation";
 import { HeroCarousel } from "@/components/site/hero-carousel";
 import { PublicShell } from "@/components/site/public-shell";
 import { SectionHeading } from "@/components/site/section-heading";
@@ -10,6 +12,7 @@ const icons = { heart: Heart, book: BookOpen, sparkles: Sparkles, users: Users }
 export default async function Home() {
   const content = await getSiteContent();
   const latest = content.articles.filter((article) => article.status === "published").sort((a, b) => b.publishDate.localeCompare(a.publishDate)).slice(0, 3);
+  const gallery = getGalleryPreview(content.galleries);
 
   return (
     <PublicShell content={content}>
@@ -33,6 +36,29 @@ export default async function Home() {
             <iframe className="h-full w-full" src="https://www.youtube.com/embed/F9WCHpAHtNA" title="Transformasi RotiMu - LKSA Muhammadiyah Sumur Bandung" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
           </div>
         </div>
+      </section>
+      <section id="galeri" className="site-container py-20 lg:py-24">
+        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <SectionHeading eyebrow="Dokumentasi" title="Momen yang tumbuh bersama" description="Lihat kegiatan, kebersamaan, dan proses belajar anak asuh di lingkungan LKSA." />
+          <Link href="/galeri" className="inline-flex shrink-0 items-center gap-2 font-bold text-orange">Lihat Semua Galeri <ArrowRight className="h-4 w-4" /></Link>
+        </div>
+        {gallery.length ? (
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {gallery.map((image) => (
+              <Link key={image.id} href="/galeri" className="group overflow-hidden rounded-2xl border border-line bg-white shadow-subtle transition hover:-translate-y-1 hover:shadow-card">
+                <div className="relative aspect-[4/3] overflow-hidden bg-[#f8fafc]">
+                  <Image src={image.url} alt={image.alt} fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
+                </div>
+                <p className="p-4 text-sm font-semibold leading-6 text-ink group-hover:text-orange">{image.caption || image.alt}</p>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="empty-state mt-10">
+            <p className="font-semibold text-ink">Galeri sedang disiapkan.</p>
+            <p className="mt-1 text-sm text-muted">Dokumentasi terbaru akan tampil di sini.</p>
+          </div>
+        )}
       </section>
       <section className="site-container py-20 lg:py-24">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
