@@ -82,23 +82,13 @@ export type Article = {
   updatedAt: string;
 };
 
-export type GalleryImage = {
+export type GalleryItem = {
   id: string;
   url: string;
   alt: string;
   caption: string;
   order: number;
-};
-
-export type GalleryAlbum = {
-  id: string;
-  title: string;
-  slug: string;
-  description: string;
-  coverUrl: string;
-  date: string;
   visible: boolean;
-  images: GalleryImage[];
 };
 
 export type PublicDocument = {
@@ -148,7 +138,7 @@ export type SiteContent = {
   organization: OrganizationNode[];
   schedule: ScheduleEntry[];
   articles: Article[];
-  galleries: GalleryAlbum[];
+  galleries: GalleryItem[];
   documents: PublicDocument[];
   donation: DonationSettings;
   ledger: DonationLedgerEntry[];
