@@ -13,8 +13,26 @@ const singletonId = "singleton";
 
 type LegacyGalleryAlbum = { visible: boolean; images: Omit<GalleryItem, "visible">[] };
 type StoredGalleryEntry = GalleryItem | LegacyGalleryAlbum;
+type StoredSiteContent = Partial<SiteContent> & {
+  settings?: Partial<SiteContent["settings"]>;
+  home?: Partial<SiteContent["home"]>;
+  donation?: Partial<SiteContent["donation"]>;
+};
 
-function normalizeSiteContent(content: SiteContent): SiteContent {
+function normalizeSiteContent(stored: StoredSiteContent): SiteContent {
+  const content = {
+    ...defaultContent,
+    ...stored,
+    settings: { ...defaultContent.settings, ...stored.settings },
+    home: {
+      about: { ...defaultContent.home.about, ...stored.home?.about },
+      video: { ...defaultContent.home.video, ...stored.home?.video },
+      gallery: { ...defaultContent.home.gallery, ...stored.home?.gallery },
+      news: { ...defaultContent.home.news, ...stored.home?.news },
+      support: { ...defaultContent.home.support, ...stored.home?.support },
+    },
+    donation: { ...defaultContent.donation, ...stored.donation },
+  } as SiteContent;
   const entries = (content.galleries as unknown as StoredGalleryEntry[] | undefined) ?? [];
   const galleries = entries
     .flatMap((entry) => "images" in entry ? entry.images.map((image) => ({ ...image, visible: entry.visible })) : [entry])
@@ -25,7 +43,7 @@ function normalizeSiteContent(content: SiteContent): SiteContent {
 
 async function getFileContent(): Promise<SiteContent> {
   try {
-    const stored = JSON.parse(await fs.readFile(contentPath, "utf8")) as SiteContent;
+    const stored = JSON.parse(await fs.readFile(contentPath, "utf8")) as StoredSiteContent;
     return normalizeSiteContent(stored);
   } catch {
     return normalizeSiteContent(defaultContent);
@@ -36,7 +54,7 @@ export async function getSiteContent(): Promise<SiteContent> {
   if (db) {
     try {
       const rows = await db.select().from(siteSettings).where(eq(siteSettings.id, singletonId)).limit(1);
-      if (rows[0]?.data) return normalizeSiteContent(rows[0].data as SiteContent);
+      if (rows[0]?.data) return normalizeSiteContent(rows[0].data as StoredSiteContent);
     } catch {
       if (process.env.NODE_ENV === "production") throw new Error("Canonical content source is unavailable.");
     }
