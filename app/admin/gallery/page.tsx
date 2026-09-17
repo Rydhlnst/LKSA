@@ -3,6 +3,7 @@ import Link from "next/link";
 import { saveGalleryAction } from "@/app/admin/actions";
 import { AdminHeader, AdminShell } from "@/components/admin/admin-shell";
 import { DeleteGalleryForm } from "@/components/admin/delete-gallery-form";
+import { GalleryImageDropzone } from "@/components/admin/gallery-image-dropzone";
 import { requireAdmin } from "@/lib/auth";
 import { getSiteContent } from "@/lib/content-store";
 
@@ -18,15 +19,20 @@ export default async function GalleryAdminPage({ searchParams }: PageProps<"/adm
 
   return (
     <AdminShell>
-      <AdminHeader eyebrow="Media" title="Galeri foto" description="Kelola koleksi foto publik sebagai satu galeri tanpa pengelompokan album kegiatan." />
-      <div className="max-w-6xl space-y-6 p-5 md:p-10">
-        <Link href="/admin/media" className="inline-flex items-center gap-2 text-sm font-semibold text-muted hover:text-orange">← Kembali ke Media Library</Link>
+        <AdminHeader eyebrow="Media" title="Galeri foto" description="Kelola koleksi foto publik sebagai satu galeri tanpa pengelompokan album kegiatan." />
+        <div className="max-w-6xl space-y-6 p-5 md:p-10">
+          <Link href="/admin/media" className="inline-flex items-center gap-2 text-sm font-semibold text-muted hover:text-orange">← Kembali ke Media Library</Link>
+        {params.error === "validation" && <p role="alert" className="rounded-xl border border-red-200 bg-white px-4 py-3 text-sm font-semibold text-red-700">Pilih dan unggah foto terlebih dahulu, lalu lengkapi detail galeri.</p>}
+        {params.saved === "1" && <p role="status" className="rounded-xl border border-green-200 bg-white px-4 py-3 text-sm font-semibold text-green-700">Foto berhasil ditambahkan ke galeri.</p>}
         <form action={saveGalleryAction} className="grid gap-5 rounded-2xl border-2 border-dashed border-line bg-white p-6 shadow-subtle md:grid-cols-2">
           <div className="md:col-span-2">
             <h2 className="font-heading text-xl font-bold">Tambahkan foto ke galeri</h2>
-            <p className="mt-1 text-sm text-muted">{initialUrl ? "Aset baru sudah dipilih dari Media Library. Lengkapi detailnya lalu simpan." : "Tempel URL dari Media Library setelah upload berhasil."}</p>
+            <p className="mt-1 text-sm text-muted">{initialUrl ? "Aset dari Media Library sudah dipilih. Anda bisa menggantinya dengan foto lain." : "Upload foto langsung dengan menarik file ke area di bawah atau memilih dari perangkat."}</p>
           </div>
-          <label className="text-sm font-semibold md:col-span-2">URL gambar<input className={input} name="url" defaultValue={initialUrl} placeholder="https://media.example.com/uploads/foto.jpg" required /></label>
+          <div className="md:col-span-2">
+            <p className="mb-2 text-sm font-semibold">Foto galeri</p>
+            <GalleryImageDropzone initialUrl={initialUrl} initialAlt={initialAlt} />
+          </div>
           <label className="text-sm font-semibold">Teks alternatif<input className={input} name="alt" defaultValue={initialAlt} placeholder="Anak asuh mengikuti kegiatan..." required /></label>
           <label className="text-sm font-semibold">Urutan<input className={input} name="order" type="number" min={1} defaultValue={images.length + 1} required /></label>
           <label className="text-sm font-semibold md:col-span-2">Keterangan<input className={input} name="caption" placeholder="Kegiatan pembinaan bersama anak asuh." /></label>
@@ -62,7 +68,7 @@ export default async function GalleryAdminPage({ searchParams }: PageProps<"/adm
           ) : (
             <div className="empty-state mt-6">
               <p className="font-semibold text-ink">Belum ada foto.</p>
-              <p className="mt-1 text-sm text-muted">Upload aset melalui Media Library, lalu tambahkan URL-nya di sini.</p>
+              <p className="mt-1 text-sm text-muted">Upload foto melalui dropzone di atas untuk mulai mengisi galeri.</p>
             </div>
           )}
         </div>
