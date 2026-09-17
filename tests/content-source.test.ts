@@ -81,3 +81,42 @@ test("canonical seeding requires DATABASE_URL without logging credentials", asyn
     if (previous !== undefined) process.env.DATABASE_URL = previous;
   }
 });
+
+test("merge flattens legacy gallery albums before matching image IDs and preserves hidden visibility", () => {
+  const seed = structuredClone(defaultContent);
+  const hiddenImages = [
+    { ...seed.galleries[1], caption: "Dashboard hidden caption", order: 22 },
+    { ...seed.galleries[0], url: "/dashboard-image.jpg", alt: "Dashboard alt", order: 21 },
+  ];
+  const flatImage = { ...seed.galleries[2], caption: "Dashboard flat caption", visible: false };
+  const customImage = { ...seed.galleries[0], id: "dashboard-image", caption: "Custom album caption", order: 20 };
+  const existing = {
+    ...structuredClone(defaultContent),
+    galleries: [
+      { id: "hidden-album", visible: false, images: hiddenImages },
+      flatImage,
+      { id: "visible-album", visible: true, images: [customImage] },
+    ],
+  } as unknown as SiteContent;
+  const original = structuredClone(existing);
+  const merged = mergeSeedContent(existing, seed);
+
+  // Flatten as the runtime reader does, so nested duplicates cannot evade the assertion.
+  const runtimeImages = (merged.galleries as unknown as (
+    SiteContent["galleries"][number] | { visible: boolean; images: SiteContent["galleries"] }
+  )[]).flatMap((entry) => "images" in entry
+    ? entry.images.map((image) => ({ ...image, visible: entry.visible }))
+    : [entry]);
+  assert.equal(new Set(runtimeImages.map((image) => image.id)).size, runtimeImages.length);
+  assert.equal(merged.galleries.length, seed.galleries.length + 1);
+  assert.ok(merged.galleries.every((image) => !("images" in image)));
+  assert.deepEqual(merged.galleries.slice(0, 4), [
+    ...hiddenImages.map((image) => ({ ...image, visible: false })),
+    flatImage,
+    { ...customImage, visible: true },
+  ]);
+  assert.equal(merged.galleries.find((image) => image.id === "gallery-1")?.visible, false);
+  assert.equal(merged.galleries.find((image) => image.id === "gallery-2")?.visible, false);
+  assert.deepEqual(mergeSeedContent(merged, seed), merged);
+  assert.deepEqual(existing, original);
+});

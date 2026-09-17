@@ -1,7 +1,15 @@
 import { defaultContent } from "./content-data.ts";
-import type { SiteContent } from "./content-types.ts";
+import type { GalleryItem, SiteContent } from "./content-types.ts";
 
 export const CANONICAL_CONTENT_VERSION = 2;
+
+type LegacyGalleryAlbum = { visible: boolean; images: Omit<GalleryItem, "visible">[] };
+
+function flattenGalleries(entries: (GalleryItem | LegacyGalleryAlbum)[] = []): GalleryItem[] {
+  return entries.flatMap((entry) => "images" in entry
+    ? entry.images.map((image) => ({ ...image, visible: entry.visible }))
+    : [entry]);
+}
 
 function mergeFields<T>(existing: T | undefined, seed: T): T {
   if (existing == null || (typeof existing === "string" && !existing.trim())) return structuredClone(seed);
@@ -44,7 +52,7 @@ export function mergeSeedContent(existing: SiteContent, seed: SiteContent): Site
     organization: mergeCollection(existing.organization, seed.organization),
     schedule: mergeCollection(existing.schedule, seed.schedule),
     articles: mergeCollection(existing.articles, seed.articles),
-    galleries: mergeCollection(existing.galleries, seed.galleries),
+    galleries: mergeCollection(flattenGalleries(existing.galleries), flattenGalleries(seed.galleries)),
     documents: mergeCollection(existing.documents, seed.documents),
     ledger: mergeCollection(existing.ledger, seed.ledger),
     donors: mergeCollection(existing.donors, seed.donors),
