@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { El_Messiri, Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { getSiteContent } from "@/lib/content-store";
-import { buildSiteMetadata } from "@/lib/site-metadata";
+import { buildSiteMetadata, resolveSiteBaseUrl } from "@/lib/site-metadata";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildSiteMetadata({
     organizationName: content.settings.organizationName,
     description: content.settings.footerDescription,
-    baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
+    baseUrl: resolveSiteBaseUrl(process.env.NEXT_PUBLIC_BASE_URL),
   });
 }
 

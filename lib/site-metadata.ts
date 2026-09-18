@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 
 const shareImagePath = "/media/hero-kegiatan-pengajian.jpeg";
+export const defaultSiteBaseUrl = "https://www.pantiasuhanmuhammadiyahsmrbdg.web.id";
+
+export function resolveSiteBaseUrl(configuredBaseUrl?: string): string {
+  return configuredBaseUrl?.trim() || defaultSiteBaseUrl;
+}
 
 interface SiteMetadataInput {
   organizationName: string;
