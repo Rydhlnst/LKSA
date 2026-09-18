@@ -3,6 +3,8 @@ import { getSiteContent } from "@/lib/content-store";
 import { PublicShell } from "@/components/site/public-shell";
 import { SectionHeading } from "@/components/site/section-heading";
 
+export const dynamic = "force-dynamic";
+
 export default async function OrganizationPage() {
   const content = await getSiteContent();
   const page = content.pages.find((item) => item.slug === "struktur-organisasi" && item.status === "published");
