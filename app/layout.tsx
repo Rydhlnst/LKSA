@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { El_Messiri, Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { getSiteContent } from "@/lib/content-store";
+import { buildSiteMetadata } from "@/lib/site-metadata";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -9,10 +10,11 @@ const elMessiri = El_Messiri({ subsets: ["latin"], variable: "--font-el-messiri"
 
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getSiteContent();
-  return {
-    title: content.settings.organizationName,
+  return buildSiteMetadata({
+    organizationName: content.settings.organizationName,
     description: content.settings.footerDescription,
-  };
+    baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
+  });
 }
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
